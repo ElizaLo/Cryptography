@@ -39,8 +39,10 @@ Let _P, Q_ be two points on an elliptic curve. Points doubling P + P = 2P = Q
    
 ### Divisor 
 
-A divisor _D_ on curve _E_ is a convenient way to denote a **multi-set of points on _E_**, written as the formal sum 
-![Divisor formula](https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/Divisor.png)
+A divisor _D_ on curve _E_ is a convenient way to denote a **multi-set of points on _E_**, written as the formal sum
+
+<img src="https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/Divisor.png" width="310" height="90,7">
+
 - The set of all divisors on _E_ is denoted by _Div<sub>F<sub>q</sub></sub>(E)_ and forms a group, where addition of divisors is natural.
 - The zero divisor: it is the divisor with all n<sub>P</sub> = 0, the zero divisor _0 ∈ Div<sub>F<sub>q</sub></sub>(E)_.
 - If the field _F<sub>q</sub>_ is not specific, it can be omitted and simply written as _Div(E)_
@@ -61,6 +63,66 @@ _e<sub>m</sub>(P, Q<sub>1</sub> + Q<sub>2</sub>) = e<sub>m</sub>(P, Q<sub>1</sub
 
 The **Weil pairing** of _P_ and _Q_ is the quantity
 
-![Weil](https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/Weil%20formula.png)
+<img src="https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/Weil%20formula.png" width="433" height="88">
 
 where _S ∈ E_ is any point satisfying _S ∉ {O, P, −Q, P − Q}_. (This ensures that all of the quantities on the right-hand side of are defined and nonzero.) One can check that the value of _e<sub>m</sub>(P,Q)_ does not depend on the choice of _f<sub>P</sub>_, _f<sub>Q</sub>_, and _S_.
+
+### An efficient algorithm to compute the Weil pairing
+
+Let _E_ be an elliptic curve and let P = (x<sub>P</sub>,y<sub>P</sub>) and Q = (x<sub>Q</sub>, y<sub>Q</sub>) be nonzero points on _E_.
+
+Let _λ_ be the slope of the line connecting _P_ and _Q_, or the slope of the tangent line to _E_ at P if _P = Q_. (If the line is vertical, we let _λ_ = ∞.) Define a function g<sub>P, Q</sub> on _E_ as follows:
+
+<img src="https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/g(P%2CQ).png" width="425" height="105">
+
+Then 
+
+div(g<sub>P, Q</sub>) = [P] +[Q] - [P + Q] -[_O_].
+
+**Miller’s Algorithm**
+
+Let _m ≥_ and write the binary expansion of _m_ as
+
+_m = m<sub>0</sub> + m<sub>1</sub> * 2 + m<sub>2</sub> * 2<sup>2</sup> +···+ m<sub>n - 1</sub> 2<sup>n - 1</sup>_
+
+with _m<sub>i</sub> ∈ {0, 1}_ and _m<sub>n - 1</sub> ≠ 0_. The following algorithm returns a function _f<sub>P</sub>_ whose divisor satisfies
+
+div(_f<sub>P</sub>_) = _m_[_P_] − [_mP_] − (_m − 1_)[_O_],
+
+where the functions _g<sub>T, T</sub>_ and _g<sub>T, P</sub>_ used by the algorithm are as defined in (a).
+
+<img src="https://github.com/ElizaLo/Cryptography/blob/master/Elliptic%20Curve/img/Miller’s%20Algorithm.png" width="260" height="230">
+
+In particular, if _P ∈ E[m]_, then div(_f<sub>P</sub>_) = _m_[_P_] − _m_[_O_].
+
+## Requirements
+
+- `Python 3.5`
+- `numpy`
+
+## Code Organization
+
+    ├── Curves.py             <- Dataset of elleptic curves
+    ├── Divisor.py            <- Generarate divisor
+    ├── EllipticCurve.py      <- Classes of elliptic curve and point on elliptic curve
+    ├── EuclideanAlg.py       <- Extended Euclidean algorithm
+    ├── Helper.py             <- Helping functions(Reverse bits, modulo power...) 
+    ├── Pairing.py            <- Weil pairing and Miller’s Algorithm
+    ├── Tests.py              <- Unit trsts for functions
+    ├── Tonelli_ShanksAlg.py  <- Tonelli–Shanks algorithm
+    ├── main.py               <- main
+    
+## Useful Articles
+
+- [Efficient Computation of Miller's Algorithm in Pairing-Based Cryptography](https://scholar.uwindsor.ca/cgi/viewcontent.cgi?article=7026&context=etd)
+- [An Introduction to Mathematical Cryptography](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.182.9999&rep=rep1&type=pdf)
+- [Tonelli–Shanks algorithm](https://en.wikipedia.org/wiki/Tonelli–Shanks_algorithm)
+- [Quadratic residue](https://en.wikipedia.org/wiki/Quadratic_residue)
+- [Exponentiation by squaring](https://en.wikipedia.org/wiki/Exponentiation_by_squaring)
+- [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm)
+
+## Useful Links
+
+- [Elliptic Curves](https://www.desmos.com/calculator/ialhd71we3)
+- [How to find primitive point on an elliptic curve?](https://math.stackexchange.com/questions/866829/how-to-find-primitive-point-on-an-elliptic-curve)
+- [Generating random (torsion) point on elliptic curve efficiently](https://math.stackexchange.com/questions/3075947/generating-random-torsion-point-on-elliptic-curve-efficiently)
