@@ -56,6 +56,21 @@ class TestECurves(unittest.TestCase):
         r = 0xFFFFFFFFFFFFFFFFFFFFFFFE26F2FC170F69466A74DEFD8D
         a = 2
         b = 1
+        #print("Weil: ", Weil(P, Q, r))
+        self.assertEqual(Weil(a * P, b * Q, r), moduloPow(Weil(P, Q, r), a * b, P.E.mod))
+
+    def test_Weil1(self):
+        E = secp192k1
+        G = EPoint(E, 0xDB4FF10EC057E9AE26B07D0280B7F4341DA5D1B1EAE06C7D,
+                   0x9B2F2F6D9C5628A7844163D015BE86344082AA88D95E2F9D)
+        j = 4233434343432443243 * 2343432432243
+        P = 2343432432243 * G
+        Q = 4233434343432443243 * G
+        r = 0xFFFFFFFFFFFFFFFFFFFFFFFE26F2FC170F69466A74DEFD8D
+        a = 2
+        b = 1
+        print(j==r)
+        print("Weil1: ", Weil(P, Q, r))
         self.assertEqual(Weil(a * P, b * Q, r), moduloPow(Weil(P, Q, r), a * b, P.E.mod))
 
     def test_Weil2(self):
