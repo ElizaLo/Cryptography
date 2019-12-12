@@ -108,7 +108,7 @@ In particular, if _P ∈ E[m]_, then div(_f<sub>P</sub>_) = _m_[_P_] − _m_[_O_
     ├── EuclideanAlg.py       <- Extended Euclidean algorithm
     ├── Helper.py             <- Helping functions(Reverse bits, modulo power...) 
     ├── Pairing.py            <- Weil pairing and Miller’s Algorithm
-    ├── Tests.py              <- Unit trsts for functions
+    ├── Tests.py              <- Unit tests for functions
     ├── Tonelli_ShanksAlg.py  <- Tonelli–Shanks algorithm
     ├── main.py               <- main
     
